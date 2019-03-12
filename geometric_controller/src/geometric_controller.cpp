@@ -29,23 +29,20 @@ geometricCtrl::geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& n
   arming_client_ = nh_.serviceClient<mavros_msgs::CommandBool>("/mavros/cmd/arming");
   set_mode_client_ = nh_.serviceClient<mavros_msgs::SetMode>("/mavros/set_mode");
 
-  nh_.param<string>("/geometric_controller/mavname", mav_name_, "iris");
+   std::vector<double> Kp, Kv, Cd, initpos;
+
+  nh_.param<string>("sys/name", mav_name_, "iris");
   nh_.param<int>("/geometric_controller/ctrl_mode", ctrl_mode_, MODE_BODYRATE);
   nh_.param<bool>("/geometric_controller/enable_sim", sim_enable_, true);
   nh_.param<bool>("/geometric_controller/enable_gazebo_state", use_gzstates_, false);
-  nh_.param<double>("/geometric_controller/max_acc", max_fb_acc_, 7.0);
+  nh_.param<double>("gains/maximum_acc", max_fb_acc_);
   nh_.param<double>("/geometric_controller/yaw_heading", mavYaw_, 0.0);
-  nh_.param<double>("/geometric_controller/drag_dx", dx_, 0.0);
-  nh_.param<double>("/geometric_controller/drag_dy", dy_, 0.0);
-  nh_.param<double>("/geometric_controller/drag_dz", dz_, 0.0);
-  nh_.param<double>("/geometric_controller/attctrl_constant", attctrl_tau_, 0.1);
-  nh_.param<double>("/geometric_controller/normalizedthrust_constant", norm_thrust_const_, 0.05); // 1 / max acceleration
-  nh_.param<double>("/geometric_controller/Kp_x", Kpos_x_, 8.0);
-  nh_.param<double>("/geometric_controller/Kp_y", Kpos_y_, 8.0);
-  nh_.param<double>("/geometric_controller/Kp_z", Kpos_z_, 30.0);
-  nh_.param<double>("/geometric_controller/Kv_x", Kvel_x_, 2.0);
-  nh_.param<double>("/geometric_controller/Kv_y", Kvel_y_, 2.0);
-  nh_.param<double>("/geometric_controller/Kv_z", Kvel_z_, 10.0);
+  nh_.getParam("geometric_controller/sim/initpos", initpos);
+  nh_.getParam("geometric_controller/gains/C_drag", Cd);
+  nh_.getParam("geometric_controller/gains/tau", attctrl_tau_);
+  nh_.getParam("geometric_controller/gains/C_thrust", norm_thrust_const_); // 1 / max acceleration
+  nh_.getParam("geometric_controller/gains/Kp", Kp);
+  nh_.getParam("geometric_controller/gains/Kp", Kv);
   nh_.param<bool>("/geometric_controller/enable_dob", use_dob_, false);
   nh_.param<double>("/geometric_controller/dob/a0_x", a0_x, 10.0);
   nh_.param<double>("/geometric_controller/dob/a0_y", a0_y, 10.0);
@@ -61,12 +58,13 @@ geometricCtrl::geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& n
   nh_.param<double>("/geometric_controller/dob/max_dhat", dhat_max, 10.0);
   nh_.param<double>("/geometric_controller/dob/min_dhat", dhat_min, -10.0);
 
-  targetPos_ << 0.0, 0.0, 1.5; //Initial Position
+  targetPos_ << initpos[0], initpos[1], initpos[2]; //Initial Position
   targetVel_ << 0.0, 0.0, 0.0;
   g_ << 0.0, 0.0, -9.8;
-  Kpos_ << -Kpos_x_, -Kpos_y_, -Kpos_z_;
-  Kvel_ << -Kvel_x_, -Kvel_z_, -Kvel_z_;
-  D_ << dx_, dy_, dz_;
+
+  Kpos_ << -Kp[0], -Kp[1], -Kp[2];
+  Kvel_ << -Kv[0], -Kv[1], -Kv[2];
+  D_ << Cd[0], Cd[1], Cd[2];
 
   q_.resize(3);
   p_.resize(3);

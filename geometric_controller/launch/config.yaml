@@ -1,0 +1,15 @@
+# Common configuration for geometric_controller
+#
+sys:
+  name: "iris"
+  autoarm: true
+sim:
+  initpos: [0.0, 0.0, 1.5]
+# Gains for the geometric controller
+gains:
+  Kp: [8.0, 8.0, 30.0]
+  Kv: [2.0, 2.0, 10.0]
+  tau: 0.05
+  C_thrust: 0.05
+  C_drag: [0.0, 0.0, 0.0]
+  maximum_acc: 7.0
