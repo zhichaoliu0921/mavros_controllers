@@ -28,13 +28,10 @@ geometricCtrl::geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& n
   referencePosePub_ = nh_.advertise<geometry_msgs::PoseStamped>("reference/pose", 1);
   target_pose_pub_ = nh_.advertise<geometry_msgs::PoseStamped>("/mavros/setpoint_position/local", 10);
 
-  arming_client_ = nh_.serviceClient<mavros_msgs::CommandBool>("/mavros/cmd/arming");
-  set_mode_client_ = nh_.serviceClient<mavros_msgs::SetMode>("/mavros/set_mode");
   land_service_ = nh_.advertiseService("land", &geometricCtrl::landCallback, this);
 
   nh_.param<string>("/geometric_controller/mavname", mav_name_, "iris");
   nh_.param<int>("/geometric_controller/ctrl_mode", ctrl_mode_, MODE_BODYRATE);
-  nh_.param<bool>("/geometric_controller/enable_sim", sim_enable_, true);
   nh_.param<double>("/geometric_controller/max_acc", max_fb_acc_, 7.0);
   nh_.param<double>("/geometric_controller/yaw_heading", mavYaw_, 0.0);
   nh_.param<double>("/geometric_controller/drag_dx", dx_, 0.0);
@@ -225,25 +222,7 @@ void geometricCtrl::mavstateCallback(const mavros_msgs::State::ConstPtr& msg){
 }
 
 void geometricCtrl::statusloopCallback(const ros::TimerEvent& event){
-  if(sim_enable_){
-    // Enable OFFBoard mode and arm automatically
-    // This is only run if the vehicle is simulated
-    arm_cmd_.request.value = true;
-    offb_set_mode_.request.custom_mode = "OFFBOARD";
-    if( current_state_.mode != "OFFBOARD" && (ros::Time::now() - last_request_ > ros::Duration(5.0))){
-      if( set_mode_client_.call(offb_set_mode_) && offb_set_mode_.response.mode_sent){
-        ROS_INFO("Offboard enabled");
-      }
-      last_request_ = ros::Time::now();
-    } else {
-      if( !current_state_.armed && (ros::Time::now() - last_request_ > ros::Duration(5.0))){
-        if( arming_client_.call(arm_cmd_) && arm_cmd_.response.success){
-          ROS_INFO("Vehicle armed");
-        }
-        last_request_ = ros::Time::now();
-      }
-    }
-  }
+
 }
 
 void geometricCtrl::pubReferencePose(){

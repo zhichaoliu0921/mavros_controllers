@@ -48,18 +48,16 @@ class geometricCtrl
     ros::Subscriber mavtwistSub_;
     ros::Publisher rotorVelPub_, angularVelPub_, target_pose_pub_;
     ros::Publisher referencePosePub_;
-    ros::ServiceClient arming_client_;
-    ros::ServiceClient set_mode_client_;
     ros::ServiceServer ctrltriggerServ_;
     ros::ServiceServer land_service_;
     ros::Timer cmdloop_timer_, statusloop_timer_;
-    ros::Time last_request_, reference_request_now_, reference_request_last_;
+    ros::Time reference_request_now_, reference_request_last_;
 
     string mav_name_;
     bool fail_detec_, ctrl_enable_, feedthrough_enable_;
     int ctrl_mode_;
     bool landing_commanded_;
-    bool sim_enable_, use_dob_;
+    bool use_dob_;
     double kp_rot_, kd_rot_;
     double reference_request_dt_;
     double attctrl_tau_;
@@ -68,8 +66,6 @@ class geometricCtrl
     double dx_, dy_, dz_;
 
     mavros_msgs::State current_state_;
-    mavros_msgs::SetMode offb_set_mode_;
-    mavros_msgs::CommandBool arm_cmd_;
     mavros_msgs::AttitudeTarget angularVelMsg_;
     geometry_msgs::PoseStamped referencePoseMsg_;
 
