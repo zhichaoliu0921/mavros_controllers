@@ -11,16 +11,22 @@ add_definitions(-std=c++11)
 ############
 # BINARIES #
 ############
-cs_add_executable(trajectory_publisher
-        src/trajectoryPublisher.cpp
-        src/trajectoryPublisher_node.cpp
-        src/trajectory.cpp
-        src/polynomialtrajectory.cpp
-        src/shapetrajectory.cpp
-        )
+cs_add_library(${PROJECT_NAME}
+  src/trajectory.cpp
+  src/polynomialtrajectory.cpp
+  src/shapetrajectory.cpp
+  src/trajectoryPublisher.cpp
+)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+
+cs_add_executable(trajectory_publisher_node
+        src/trajectoryPublisher_node.cpp
+        )
+target_link_libraries(trajectory_publisher_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+
 ##########
 # EXPORT #
 ##########
-#cs_install()
-#cs_export()
+cs_install()
+cs_export()
