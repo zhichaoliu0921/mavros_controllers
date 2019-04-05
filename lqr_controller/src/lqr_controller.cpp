@@ -13,24 +13,7 @@ StateDependentLqr::StateDependentLqr(const ros::NodeHandle& nh, const ros::NodeH
   cmdloop_timer_ = nh_.createTimer(ros::Duration(0.01), &StateDependentLqr::CmdLoopCallback, this); // Define timer for constant loop rate
   statusloop_timer_ = nh_.createTimer(ros::Duration(1), &StateDependentLqr::StatusLoopCallback, this); // Define timer for constant loop rate
 
-  double Kpos_x_, Kpos_y_, Kpos_z_, Kvel_x_, Kvel_y_, Kvel_z_;
 
-  g_ << 0.0, 0.0, -9.8;
-  Kpos_ << -Kpos_x_, -Kpos_y_, -Kpos_z_;
-  Kvel_ << -Kvel_x_, -Kvel_z_, -Kvel_z_;
-  tau << tau_x, tau_y, tau_z;
-
-  q_.resize(3);
-  p_.resize(3);
-  for (int i = 0; i < 3; ++i) {
-    q_.at(i) << 0.0, 0.0;
-    p_.at(i) << 0.0, 0.0;
-  }
-  a0 << a0_x, a0_y, a0_z;
-  a1 << a1_x, a1_y, a1_z;
-
-  a_fb << 0.0, 0.0, 0.0;
-  a_dob << 0.0, 0.0, 0.0;
 
 }
 StateDependentLqr::~StateDependentLqr() {
@@ -38,18 +21,32 @@ StateDependentLqr::~StateDependentLqr() {
 }
 
 void StateDependentLqr::CmdLoopCallback(const ros::TimerEvent& event){
-  // /// Compute BodyRate commands using disturbance observer
-  // /// From Hyuntae Kim
-  geometric_controller_.getErrors(pos_error, vel_error);
-  
-  a_fb = Kpos_.asDiagonal() * pos_error + Kvel_.asDiagonal() * vel_error; //feedforward term for trajectory error
-  a_des = a_fb - a_dob - g_;
+  /// State Dependent Linear Quadratic Regulator
 
+  geometric_controller_.getErrors(pos_error_, vel_error_);
+  Eigen::Vector4d w_des;
+
+  // ParseStates();
+  // LinearizeDynamics(x);
+
+  CalculateOptimalGain();
+
+  // w_des = K * (x - x_0) + u_0;
+  
   geometric_controller_.setFeedthrough(true);
-  geometric_controller_.setDesiredAcceleration(a_des);
+  geometric_controller_.setBodyRateCommand(w_des);
 
 }
 
 void StateDependentLqr::StatusLoopCallback(const ros::TimerEvent& event){
+
+}
+
+void StateDependentLqr::CalculateOptimalGain(){
+  K_ = - R_.inverse() * B_.transpose() * P_;
+
+}
+
+void StateDependentLqr::ParseStates(){
 
 }
