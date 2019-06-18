@@ -67,6 +67,26 @@ geometricCtrl::~geometricCtrl() {
   //Destructor
 }
 
+void geometricCtrl::getTargetFromTrajectory(const trajectory_msgs::MultiDOFJointTrajectory& msg){
+  ros::Duration curr_time_from_start;
+  
+  for(size_t i = 0; i < msg.points.size(); i++){
+    trajectory_msgs::MultiDOFJointTrajectoryPoint pt = msg.points[i];
+
+    curr_time_from_start = ros::Time::now() - refstart_time_;
+
+    if(pt.time_from_start.toSec() < curr_time_from_start.toSec() ){
+
+      targetPos_ << pt.transforms[0].translation.x, pt.transforms[0].translation.y, pt.transforms[0].translation.z;
+      targetVel_ << pt.velocities[0].linear.x, pt.velocities[0].linear.y, pt.velocities[0].linear.z;
+
+      targetAcc_ << pt.accelerations[0].linear.x, pt.accelerations[0].linear.y, pt.accelerations[0].linear.z;
+      targetJerk_ << 0.0, 0.0, 0.0;
+      targetSnap_ << 0.0, 0.0, 0.0;
+    }
+  }
+}
+
 void geometricCtrl::targetCallback(const geometry_msgs::TwistStamped& msg) {
 
   reference_request_last_ = reference_request_now_;
@@ -130,21 +150,9 @@ void geometricCtrl::yawtargetCallback(const std_msgs::Float32& msg) {
 
 void geometricCtrl::multiDOFJointCallback(const trajectory_msgs::MultiDOFJointTrajectory& msg) {
 
-  trajectory_msgs::MultiDOFJointTrajectoryPoint pt = msg.points[0];
-  reference_request_last_ = reference_request_now_;
-
-  targetPos_prev_ = targetPos_;
-  targetVel_prev_ = targetVel_;
-
-  reference_request_now_ = ros::Time::now();
-  reference_request_dt_ = (reference_request_now_ - reference_request_last_).toSec();
-
-  targetPos_ << pt.transforms[0].translation.x, pt.transforms[0].translation.y, pt.transforms[0].translation.z;
-  targetVel_ << pt.velocities[0].linear.x, pt.velocities[0].linear.y, pt.velocities[0].linear.z;
-
-  targetAcc_ << pt.accelerations[0].linear.x, pt.accelerations[0].linear.y, pt.accelerations[0].linear.z;
-  targetJerk_ << 0.0, 0.0, 0.0;
-  targetSnap_ << 0.0, 0.0, 0.0;
+  follow_reftrajectory_ = true;
+  refstart_time_ = ros::Time::now();
+  refmultiDofMsg_ = msg;
 }
 
 void geometricCtrl::mavposeCallback(const geometry_msgs::PoseStamped& msg){
@@ -186,6 +194,8 @@ void geometricCtrl::cmdloopCallback(const ros::TimerEvent& event){
       break;
   case MISSION_EXECUTION:
   
+    if(follow_reftrajectory_) getTargetFromTrajectory(refmultiDofMsg_);
+
     errorPos_ = mavPos_ - targetPos_;
     errorVel_ = mavVel_ - targetVel_;
 

@@ -74,6 +74,7 @@ class geometricCtrl
     ros::ServiceServer land_service_;
     ros::Timer cmdloop_timer_, statusloop_timer_;
     ros::Time last_request_, reference_request_now_, reference_request_last_;
+    ros::Time refstart_time_;
 
     string mav_name_;
     bool fail_detec_, ctrl_enable_, feedthrough_enable_;
@@ -81,6 +82,7 @@ class geometricCtrl
     bool landing_commanded_;
     bool sim_enable_, use_dob_;
     bool velocity_yaw_;
+    bool follow_reftrajectory_;
     double kp_rot_, kd_rot_;
     double reference_request_dt_;
     double attctrl_tau_;
@@ -93,6 +95,7 @@ class geometricCtrl
     mavros_msgs::CommandBool arm_cmd_;
     mavros_msgs::AttitudeTarget angularVelMsg_;
     geometry_msgs::PoseStamped referencePoseMsg_;
+    trajectory_msgs::MultiDOFJointTrajectory refmultiDofMsg_;
     std::vector<geometry_msgs::PoseStamped> posehistory_vector_;
     MAV_STATE companion_state_ = MAV_STATE::MAV_STATE_ACTIVE;
 
@@ -115,6 +118,7 @@ class geometricCtrl
     void pubPoseHistory();
     void pubSystemStatus();
     void appendPoseHistory();
+    void getTargetFromTrajectory(const trajectory_msgs::MultiDOFJointTrajectory& msg);
     void odomCallback(const nav_msgs::OdometryConstPtr& odomMsg);
     void targetCallback(const geometry_msgs::TwistStamped& msg);
     void flattargetCallback(const controller_msgs::FlatTarget& msg);
