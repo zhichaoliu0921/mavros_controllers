@@ -436,6 +436,10 @@ void geometricCtrl::getErrors(Eigen::Vector3d &pos, Eigen::Vector3d &vel){
   vel = errorVel_;
 }
 
+void geometricCtrl::getTargets(Eigen::Vector3d &pos){
+  pos = targetPos_;
+}
+
 bool geometricCtrl::ctrltriggerCallback(std_srvs::SetBool::Request &req,
                                           std_srvs::SetBool::Response &res){
   unsigned char mode = req.data;
