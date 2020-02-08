@@ -34,11 +34,15 @@ TEST(GeometricControllerTest, acc2quaternion) {
 TEST(GeometricControllerTest, matrix_hat) {
   Eigen::Vector3d test;
   Eigen::Vector3d result;
-
+  Eigen::Matrix3d matrix;
   test<< 1.0, 2.0, 3.0;
 
+  matrix = geometricCtrl::matrix_hat(test);
   result = geometricCtrl::matrix_hat_inv(geometricCtrl::matrix_hat(test));
 
   ASSERT_TRUE(result.isApprox(test));
-  
+  EXPECT_EQ(matrix(7), test(0));
+  EXPECT_EQ(matrix(2), test(1));
+  EXPECT_EQ(matrix(3), test(2));
+
 }
