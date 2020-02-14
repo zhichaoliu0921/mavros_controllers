@@ -160,6 +160,7 @@ class geometricCtrl
     bool received_home_pose;
 
   public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     void dynamicReconfigureCallback(geometric_controller::GeometricControllerConfig &config,uint32_t level);
     geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private);
     void getStates(Eigen::Vector3d &pos, Eigen::Vector4d &att, Eigen::Vector3d &vel, Eigen::Vector3d &angvel);

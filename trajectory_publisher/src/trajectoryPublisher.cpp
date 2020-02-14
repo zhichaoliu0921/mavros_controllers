@@ -139,15 +139,26 @@ void trajectoryPublisher::pubflatrefState(){
   msg.header.stamp = ros::Time::now();
   msg.header.frame_id = "map";
   msg.type_mask = pubreference_type_;
-  msg.position.x = p_targ(0);
-  msg.position.y = p_targ(1);
-  msg.position.z = p_targ(2);
-  msg.velocity.x = v_targ(0);
-  msg.velocity.y = v_targ(1);
-  msg.velocity.z = v_targ(2);
-  msg.acceleration.x = a_targ(0);
-  msg.acceleration.y = a_targ(1);
-  msg.acceleration.z = a_targ(2);
+//  msg.position.x = p_targ(0);
+//  msg.position.y = p_targ(1);
+//  msg.position.z = p_targ(2);
+//  msg.velocity.x = v_targ(0);
+//  msg.velocity.y = v_targ(1);
+//  msg.velocity.z = v_targ(2);
+//  msg.acceleration.x = a_targ(0);
+//  msg.acceleration.y = a_targ(1);
+//  msg.acceleration.z = a_targ(2);
+
+    msg.position.x = 0;
+    msg.position.y = 0;
+    msg.position.z = 1;
+    msg.velocity.x = 0;
+    msg.velocity.y = 0;
+    msg.velocity.z = 0;
+    msg.acceleration.x = 0;
+    msg.acceleration.y = 0;
+    msg.acceleration.z = 0;
+
   flatreferencePub_.publish(msg);
 }
 
@@ -177,10 +188,10 @@ void trajectoryPublisher::refCallback(const ros::TimerEvent& event){
   //Fast Loop publishing reference states
   updateReference();
   switch(pubreference_type_){
-    case REF_TWIST :
+    case REF_TWIST : //8
       pubrefState();
       break;
-    case REF_SETPOINTRAW :
+    case REF_SETPOINTRAW : //16
       pubrefSetpointRaw();
       break;
     default : 
