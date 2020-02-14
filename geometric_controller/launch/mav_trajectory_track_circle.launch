@@ -20,7 +20,7 @@
           <param name="Kp_x" value="8.0" />
           <param name="Kp_y" value="8.0" />
           <param name="Kp_z" value="10.0" />
-      <param name="normalizedthrust_constant" value="0.05" />
+      <param name="normalizedthrust_constant" value="0.03" />
       <param name="normalizedthrust_offset" value="0.01" />
 
 
