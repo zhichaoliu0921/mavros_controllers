@@ -17,8 +17,8 @@
           <param name="ctrl_mode" value="$(arg command_input)" />
           <param name="enable_sim" value="$(arg gazebo_simulation)" />
           <param name="max_acc" value="2.0" />
-          <param name="Kp_x" value="15.0" />
-          <param name="Kp_y" value="15.0" />
+          <param name="Kp_x" value="30.0" />
+          <param name="Kp_y" value="30.0" />
           <param name="Kp_z" value="10.0" />
       <param name="normalizedthrust_constant" value="0.03" />
       <param name="normalizedthrust_offset" value="0.01" />
