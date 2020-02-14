@@ -12,7 +12,7 @@ geometricCtrl::geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& n
   ctrl_enable_(true),
   landing_commanded_(false),
   feedthrough_enable_(false),
-  node_state(WAITING_FOR_HOME_POSE) {
+  node_state(MISSION_EXECUTION) {
 
   referenceSub_=nh_.subscribe("reference/setpoint",1, &geometricCtrl::targetCallback,this,ros::TransportHints().tcpNoDelay());
   flatreferenceSub_ = nh_.subscribe("reference/flatsetpoint", 1, &geometricCtrl::flattargetCallback, this, ros::TransportHints().tcpNoDelay());
