@@ -167,7 +167,11 @@ void geometricCtrl::mavposeCallback(const geometry_msgs::PoseStamped& msg){
 
     if (! sim_enable_)
     {
+        mavPos_(0) = msg.pose.position.y; //swap x y
+        mavPos_(1) = msg.pose.position.x;
         mavPos_(2) = - mavPos_(2); // swap the direction of z
+        mavAtt_(1) = msg.pose.orientation.y; //swap x y
+        mavAtt_(2) = msg.pose.orientation.x;
         mavAtt_(3) = -mavAtt_(3);
     }
 
@@ -179,6 +183,8 @@ void geometricCtrl::mavtwistCallback(const geometry_msgs::TwistStamped& msg){
 
     if (! sim_enable_)
     {
+        mavVel_(0) = msg.twist.linear.y; //swap x y
+        mavVel_(1) = msg.twist.linear.x;
         mavVel_(2) = - mavVel_(2); // swap the direction of z
 
     }
