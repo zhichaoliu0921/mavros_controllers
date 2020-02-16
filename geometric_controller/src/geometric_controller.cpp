@@ -320,12 +320,14 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
   const Eigen::Vector3d pos_error = mavPos_ - targetPos_;
   const Eigen::Vector3d vel_error = mavVel_ - targetVel_;
 
-    ROS_INFO("pos x error = %f", pos_error(0));
-    ROS_INFO("pos y error = %f", pos_error(1));
-    ROS_INFO("pos z error = %f", pos_error(2));
-    ROS_INFO("vel x error = %f", vel_error(0));
-    ROS_INFO("vel y error = %f", vel_error(1));
-    ROS_INFO("vel z error = %f", vel_error(2));
+      ROS_INFO("current z  = %f", mavPos_(2));
+      ROS_INFO("target z  = %f", targetPos_(2));
+//    ROS_INFO("pos x error = %f", pos_error(0));
+//    ROS_INFO("pos y error = %f", pos_error(1));
+//    ROS_INFO("pos z error = %f", pos_error(2));
+//    ROS_INFO("vel x error = %f", vel_error(0));
+//    ROS_INFO("vel y error = %f", vel_error(1));
+//    ROS_INFO("vel z error = %f", vel_error(2));
   Eigen::Vector3d a_fb = Kpos_.asDiagonal() * pos_error + Kvel_.asDiagonal() * vel_error; //feedforward term for trajectory error
   if(a_fb.norm() > max_fb_acc_) a_fb = (max_fb_acc_ / a_fb.norm()) * a_fb; //Clip acceleration if reference is too large
   
