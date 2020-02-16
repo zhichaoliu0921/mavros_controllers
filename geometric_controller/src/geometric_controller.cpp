@@ -157,16 +157,31 @@ void geometricCtrl::mavposeCallback(const geometry_msgs::PoseStamped& msg){
       ROS_INFO_STREAM("Home pose initialized to: " << home_pose_);
   }
   mavPos_ = toEigen(msg.pose.position);
+
+
+
   mavAtt_(0) = msg.pose.orientation.w;
   mavAtt_(1) = msg.pose.orientation.x;
   mavAtt_(2) = msg.pose.orientation.y;
   mavAtt_(3) = msg.pose.orientation.z;
+
+    if (! sim_enable_)
+    {
+        mavPos_(2) = - mavPos_(2); // swap the direction of z
+        mavAtt_(3) = -mavAtt_(3);
+    }
+
 }
 
 void geometricCtrl::mavtwistCallback(const geometry_msgs::TwistStamped& msg){  
   mavVel_ = toEigen(msg.twist.linear);
   mavRate_ = toEigen(msg.twist.angular);
-  
+
+    if (! sim_enable_)
+    {
+        mavVel_(2) = - mavVel_(2); // swap the direction of z
+
+    }
 }
 
 bool geometricCtrl::landCallback(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response) {
