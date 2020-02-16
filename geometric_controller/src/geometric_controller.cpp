@@ -335,8 +335,10 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
   const Eigen::Vector3d pos_error = mavPos_ - targetPos_;
   const Eigen::Vector3d vel_error = mavVel_ - targetVel_;
 
+      ROS_INFO("current x  = %f", mavPos_(0));
+      ROS_INFO("current y  = %f", mavPos_(1));
       ROS_INFO("current z  = %f", mavPos_(2));
-      ROS_INFO("target z  = %f", targetPos_(2));
+      //ROS_INFO("target z  = %f", targetPos_(2));
 //    ROS_INFO("pos x error = %f", pos_error(0));
 //    ROS_INFO("pos y error = %f", pos_error(1));
 //    ROS_INFO("pos z error = %f", pos_error(2));
