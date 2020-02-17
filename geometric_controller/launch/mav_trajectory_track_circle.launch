@@ -37,7 +37,7 @@
           <param name="Kp_x" value="8.0" />
           <param name="Kp_y" value="8.0" />
           <param name="Kp_z" value="10.0" />
-      <param name="normalizedthrust_constant" value="0.02" />
+      <param name="normalizedthrust_constant" value="0.03" />
       <param name="normalizedthrust_offset" value="0.06" />
 
 
@@ -57,7 +57,4 @@
         <param name="reference_type" value="2" />
   </node>
 
-  <!-- Launch rqt_reconfigure -->
-  <node pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen" name="rqt_reconfigure" />
-</launch>
 
