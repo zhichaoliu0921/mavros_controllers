@@ -53,12 +53,6 @@
  <node name="master_sync" pkg="master_sync_fkie" type="master_sync" output="screen">
  </node>
 
-  <!-- Launch rqt_reconfigure -->
-<!--  <node pkg="rqt_reconfigure" type="rqt_reconfigure" output="screen" name="rqt_reconfigure" />-->
-
-  <group if="$(arg visualization)">
-      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find geometric_controller)/launch/config_file.rviz" />
-  </group>
 
 </launch>
 
