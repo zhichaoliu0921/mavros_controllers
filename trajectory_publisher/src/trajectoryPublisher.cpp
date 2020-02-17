@@ -15,9 +15,13 @@ trajectoryPublisher::trajectoryPublisher(const ros::NodeHandle& nh, const ros::N
   referencePub_ = nh_.advertise<geometry_msgs::TwistStamped>("reference/setpoint", 1);
   flatreferencePub_ = nh_.advertise<controller_msgs::FlatTarget>("reference/flatsetpoint", 1);
   rawreferencePub_ = nh_.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local", 1);
+  referenceRawPub_ =nh_.advertise<std_msgs::Float32>("reference/yaw", 1);
+
+
   motionselectorSub_ = nh_.subscribe("/trajectory_publisher/motionselector", 1, &trajectoryPublisher::motionselectorCallback, this,ros::TransportHints().tcpNoDelay());
   mavposeSub_ = nh_.subscribe("/mavros/local_position/pose", 1, &trajectoryPublisher::mavposeCallback, this,ros::TransportHints().tcpNoDelay());
   mavtwistSub_ = nh_.subscribe("/mavros/local_position/velocity", 1, &trajectoryPublisher::mavtwistCallback, this,ros::TransportHints().tcpNoDelay());
+
 
   trajloop_timer_ = nh_.createTimer(ros::Duration(0.1), &trajectoryPublisher::loopCallback, this);
   refloop_timer_ = nh_.createTimer(ros::Duration(0.01), &trajectoryPublisher::refCallback, this);
@@ -196,6 +200,7 @@ void trajectoryPublisher::refCallback(const ros::TimerEvent& event){
       break;
     default : 
       pubflatrefState();
+      pubTargetYaw();
       break;
   }
 }
@@ -233,4 +238,12 @@ void trajectoryPublisher::mavtwistCallback(const geometry_msgs::TwistStamped& ms
   v_mav_(2) = msg.twist.linear.z;
   updatePrimitives();
 
+}
+
+void trajectoryPublisher::pubTargetYaw() {
+    std_msgs::Float32 msg;
+
+    msg.data = 0.0;
+
+    referenceRawPub_.publish(msg);
 }

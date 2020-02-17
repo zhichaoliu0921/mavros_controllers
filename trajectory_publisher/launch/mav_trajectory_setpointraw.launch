@@ -35,4 +35,8 @@
       <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
   </include>
 
+  <group if="$(arg visualization)">
+      <node type="rviz" name="rviz" pkg="rviz" args="-d $(find geometric_controller)/launch/config_file.rviz" />
+  </group>
+
 </launch>

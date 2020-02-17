@@ -12,6 +12,7 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
+#include <std_msgs/Float32.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_srvs/SetBool.h>
@@ -36,6 +37,7 @@ private:
   ros::Publisher referencePub_;
   ros::Publisher flatreferencePub_;
   ros::Publisher rawreferencePub_;
+  ros::Publisher referenceRawPub_;
   std::vector<ros::Publisher> primitivePub_;
   ros::Subscriber motionselectorSub_;
   ros::Subscriber mavposeSub_;
@@ -75,6 +77,7 @@ public:
   void pubrefState();
   void pubflatrefState();
   void pubrefSetpointRaw();
+  void pubTargetYaw();
   void initializePrimitives(int type);
   void updatePrimitives();
   void loopCallback(const ros::TimerEvent& event);
