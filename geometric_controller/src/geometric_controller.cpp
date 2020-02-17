@@ -251,7 +251,7 @@ void geometricCtrl::statusloopCallback(const ros::TimerEvent& event){
     }
   }
   pubSystemStatus();
-    ROS_INFO("current q_des x  = %f, y = %f, z = %f, w =%f", q_des(0),q_des(1),q_des(2), q_des(3));
+    //ROS_INFO("current q_des x  = %f, y = %f, z = %f, w =%f", q_des(0),q_des(1),q_des(2), q_des(3));
 }
 
 void geometricCtrl::pubReferencePose(const Eigen::Vector3d &target_position, const Eigen::Vector4d &target_attitude){
@@ -336,6 +336,7 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
   }
 
   const Eigen::Vector4d q_ref = acc2quaternion(a_ref - g_, mavYaw_);
+  ROS_INFO("current q_ref x  = %f, y = %f, z = %f, w =%f", q_ref(0),q_ref(1),q_ref(2), q_ref(3));
   const Eigen::Matrix3d R_ref = quat2RotMatrix(q_ref);
 
   const Eigen::Vector3d pos_error = mavPos_ - targetPos_;
