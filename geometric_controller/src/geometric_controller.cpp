@@ -44,8 +44,8 @@ geometricCtrl::geometricCtrl(const ros::NodeHandle& nh, const ros::NodeHandle& n
   nh_private_.param<double>("drag_dy", dy_, 0.0);
   nh_private_.param<double>("drag_dz", dz_, 0.0);
   nh_private_.param<double>("attctrl_constant", attctrl_tau_, 0.1);
-  nh_private_.param<double>("normalizedthrust_constant", norm_thrust_const_, 0.05); // 1 / max acceleration
-  nh_private_.param<double>("normalizedthrust_offset", norm_thrust_offset_, 0.1); // 1 / max acceleration
+  nh_private_.param<double>("normalizedthrust_constant", norm_thrust_const_, 0.02); // 1 / max acceleration
+  nh_private_.param<double>("normalizedthrust_offset", norm_thrust_offset_, 0.01); // 1 / max acceleration
   nh_private_.param<double>("Kp_x", Kpos_x_, 8.0);
   nh_private_.param<double>("Kp_y", Kpos_y_, 8.0);
   nh_private_.param<double>("Kp_z", Kpos_z_, 10.0);
@@ -498,7 +498,7 @@ void geometricCtrl::dynamicReconfigureCallback(geometric_controller::GeometricCo
 		max_fb_acc_ = config.max_acc;
   		ROS_INFO("Reconfigure request : max_acc = %.2f ",config.max_acc);
     }
-	else if(Kpos_x_ != config.Kp_x){
+    else if(Kpos_x_ != config.Kp_x){
 		Kpos_x_ = config.Kp_x;
 	   ROS_INFO("Reconfigure request : Kp_x  = %.2f  ",config.Kp_x);
 	}

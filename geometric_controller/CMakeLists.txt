@@ -5,7 +5,7 @@ include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${Eigen_INCLUDE_
 
 find_package(catkin_simple REQUIRED)
 catkin_simple(ALL_DEPS_REQUIRED)
-# generate_dynamic_reconfigure_options(
+#generate_dynamic_reconfigure_options(
 #   cfg/GeometricController.cfg
 # )
 
