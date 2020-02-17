@@ -345,7 +345,7 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
 //      ROS_INFO("current vel y  = %f", mavVel_(1));
 //      ROS_INFO("current vel z  = %f", mavVel_(2));
 //      ROS_INFO("current pos x  = %f, y = %f, z = %f", mavPos_(0),mavPos_(1),mavPos_(2));
-        ROS_INFO("current error x  = %f, y = %f, z = %f", pos_error(0),pos_error(1),pos_error(2));
+ //       ROS_INFO("current error x  = %f, y = %f, z = %f", pos_error(0),pos_error(1),pos_error(2));
 //      ROS_INFO("current pos y  = %f", mavPos_(1));
 //      ROS_INFO("current pos z  = %f", mavPos_(2));
       //ROS_INFO("target z  = %f", targetPos_(2));
