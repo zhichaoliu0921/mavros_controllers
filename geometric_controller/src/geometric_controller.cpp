@@ -165,15 +165,15 @@ void geometricCtrl::mavposeCallback(const geometry_msgs::PoseStamped& msg){
   mavAtt_(2) = msg.pose.orientation.y;
   mavAtt_(3) = msg.pose.orientation.z;
 
-    if (! sim_enable_)
-    {
-        mavPos_(0) = msg.pose.position.y; //swap x y
-        mavPos_(1) = msg.pose.position.x;
-        mavPos_(2) = - mavPos_(2); // swap the direction of z
-        mavAtt_(1) = msg.pose.orientation.y; //swap x y
-        mavAtt_(2) = msg.pose.orientation.x;
-        mavAtt_(3) = -mavAtt_(3);
-    }
+//    if (! sim_enable_)
+//    {
+//        mavPos_(0) = msg.pose.position.y; //swap x y
+//        mavPos_(1) = msg.pose.position.x;
+//        mavPos_(2) = - mavPos_(2); // swap the direction of z
+//        mavAtt_(1) = msg.pose.orientation.y; //swap x y
+//        mavAtt_(2) = msg.pose.orientation.x;
+//        mavAtt_(3) = -mavAtt_(3);
+//    }
 
 }
 
@@ -181,13 +181,13 @@ void geometricCtrl::mavtwistCallback(const geometry_msgs::TwistStamped& msg){
   mavVel_ = toEigen(msg.twist.linear);
   mavRate_ = toEigen(msg.twist.angular);
 
-    if (! sim_enable_)
-    {
-        mavVel_(0) = msg.twist.linear.y; //swap x y
-        mavVel_(1) = msg.twist.linear.x;
-        mavVel_(2) = - mavVel_(2); // swap the direction of z
-
-    }
+//    if (! sim_enable_)
+//    {
+//        mavVel_(0) = msg.twist.linear.y; //swap x y
+//        mavVel_(1) = msg.twist.linear.x;
+//        mavVel_(2) = - mavVel_(2); // swap the direction of z
+//
+//    }
 }
 
 bool geometricCtrl::landCallback(std_srvs::SetBool::Request& request, std_srvs::SetBool::Response& response) {
@@ -344,7 +344,9 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
 //      ROS_INFO("current vel x  = %f", mavVel_(0));
 //      ROS_INFO("current vel y  = %f", mavVel_(1));
 //      ROS_INFO("current vel z  = %f", mavVel_(2));
-      ROS_INFO("current pos z  = %f", mavPos_(2));
+      ROS_INFO("current pos x  = %f, y = %f, z = %f", mavPos_(0),mavPos_(1),mavPos_(2));
+//      ROS_INFO("current pos y  = %f", mavPos_(1));
+//      ROS_INFO("current pos z  = %f", mavPos_(2));
       //ROS_INFO("target z  = %f", targetPos_(2));
 //    ROS_INFO("pos x error = %f", pos_error(0));
 //    ROS_INFO("pos y error = %f", pos_error(1));
