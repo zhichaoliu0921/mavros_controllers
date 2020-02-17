@@ -251,7 +251,7 @@ void geometricCtrl::statusloopCallback(const ros::TimerEvent& event){
     }
   }
   pubSystemStatus();
-
+    ROS_INFO("current q_des x  = %f, y = %f, z = %f, w =%f", q_des(0),q_des(1),q_des(2), q_des(3));
 }
 
 void geometricCtrl::pubReferencePose(const Eigen::Vector3d &target_position, const Eigen::Vector4d &target_attitude){
