@@ -70,6 +70,7 @@ private:
 
 
 public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   trajectoryPublisher(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private);
   void updateReference();
   void pubrefTrajectory(int selector);
