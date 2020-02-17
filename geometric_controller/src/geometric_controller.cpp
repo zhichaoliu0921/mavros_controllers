@@ -330,6 +330,7 @@ void geometricCtrl::computeBodyRateCmd(Eigen::Vector4d &bodyrate_cmd){
   /// Compute BodyRate commands using differential flatness
   /// Controller based on Faessler 2017
   const Eigen::Vector3d a_ref = targetAcc_;
+
   double yaw;
   if(velocity_yaw_) {
     mavYaw_ = std::atan2(-1.0 * mavVel_(1), mavVel_(0));
